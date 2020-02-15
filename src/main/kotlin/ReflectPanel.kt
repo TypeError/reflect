@@ -66,7 +66,7 @@ class ReflectionsModel : AbstractTableModel() {
             "Host",
             "URL",
             "Title",
-            "Params",
+            "Reflected Parameters",
             "Method",
             "Status",
             "Length",
