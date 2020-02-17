@@ -32,7 +32,7 @@ class ReflectListener(private val reflectPanel: ReflectPanel) : HttpSenderListen
                 params.addAll(msg.urlParams)
                 params.addAll(msg.formParams)
                 val responseBody = msg.responseBody.toString()
-                val reflected = params.asSequence().filter { it.value.length > 4 }
+                val reflected = params.asSequence().filter { it.value.length >= 4 }
                     .filter { responseBody.contains(it.value, ignoreCase = true) }.toSet()
                 if (reflected.isNotEmpty()) {
                     val now = LocalDateTime.now()
