@@ -6,15 +6,18 @@ import org.parosproxy.paros.network.HttpSender
 
 class ExtensionReflect : ExtensionAdaptor(NAME) {
 
+    val reflectPanel = ReflectPanel()
+
     companion object {
         const val NAME = "Reflect"
     }
 
     override fun hook(extensionHook: ExtensionHook?) {
         super.hook(extensionHook)
-        val reflectPanel = ReflectPanel()
-        HttpSender.addListener(ReflectListener(reflectPanel))
-        extensionHook?.hookView?.addWorkPanel(reflectPanel)
+        if (view != null) {
+            HttpSender.addListener(ReflectListener(reflectPanel))
+            extensionHook?.hookView?.addWorkPanel(reflectPanel)
+        }
     }
 
     override fun canUnload(): Boolean = true
@@ -22,5 +25,13 @@ class ExtensionReflect : ExtensionAdaptor(NAME) {
     override fun getAuthor(): String = "Caleb Kinney"
 
     override fun getDescription(): String = "Finds reflected parameters."
+
+    override fun postInstall() {
+        super.postInstall()
+
+        if (view != null) {
+            reflectPanel.setTabFocus()
+        }
+    }
 }
 
