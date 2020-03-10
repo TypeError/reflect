@@ -1,9 +1,9 @@
 package org.zaproxy.zap.extension.reflect
 
 import org.parosproxy.paros.extension.AbstractPanel
+import org.parosproxy.paros.view.View
 import java.awt.BorderLayout
 import javax.swing.JScrollPane
-import javax.swing.JSplitPane
 import javax.swing.JTable
 import javax.swing.ListSelectionModel
 import javax.swing.table.AbstractTableModel
@@ -13,7 +13,6 @@ import javax.swing.table.TableRowSorter
 class ReflectPanel : AbstractPanel() {
     val model = ReflectionsModel()
     val table = JTable(model)
-    private val reqResEditor = ReflectMessage()
 
     init {
         ReflectionActions(this, model.reflections)
@@ -37,20 +36,13 @@ class ReflectPanel : AbstractPanel() {
                 val displayedReflections = model.displayedReflections
                 val selectedRow = table.convertRowIndexToModel(table.selectedRow)
                 val requestResponse = displayedReflections[selectedRow].msg
-                reqResEditor.displayReqRes(requestResponse)
+                View.getSingleton().displayMessage(requestResponse)
             }
         }
         name = "Reflect"
         layout = BorderLayout()
         val reflectionsTable = JScrollPane(table)
-        val panel = JSplitPane(JSplitPane.VERTICAL_SPLIT)
-        val reqResSplit =
-            JSplitPane(JSplitPane.HORIZONTAL_SPLIT, reqResEditor.requestPanel, reqResEditor.responsePanel)
-        reqResSplit.resizeWeight = 0.5
-        panel.topComponent = reflectionsTable
-        panel.bottomComponent = reqResSplit
-        panel.resizeWeight = 0.5
-        add(panel)
+        add(reflectionsTable)
     }
 
     fun addReflection(reflection: ReflectedResponse) {
@@ -141,5 +133,4 @@ class ReflectionsModel : AbstractTableModel() {
         displayedReflections = updatedReflection
         fireTableDataChanged()
     }
-
 }
