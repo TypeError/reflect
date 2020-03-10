@@ -6,7 +6,7 @@ import org.parosproxy.paros.network.HttpSender
 
 class ExtensionReflect : ExtensionAdaptor(NAME) {
 
-    val reflectPanel = ReflectPanel()
+    private val reflectPanel = ReflectPanel()
 
     companion object {
         const val NAME = "Reflect"
@@ -16,7 +16,7 @@ class ExtensionReflect : ExtensionAdaptor(NAME) {
         super.hook(extensionHook)
         if (view != null) {
             HttpSender.addListener(ReflectListener(reflectPanel))
-            extensionHook?.hookView?.addWorkPanel(reflectPanel)
+            extensionHook?.hookView?.addStatusPanel(reflectPanel)
         }
     }
 
