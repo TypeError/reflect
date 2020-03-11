@@ -18,16 +18,16 @@ class ReflectPanel : AbstractPanel() {
         ReflectionActions(this, model.reflections)
         table.autoResizeMode = JTable.AUTO_RESIZE_OFF
         table.columnModel.getColumn(0).preferredWidth = 30 // ID
-        table.columnModel.getColumn(1).preferredWidth = 145 // date
+        table.columnModel.getColumn(1).preferredWidth = 50 // method
         table.columnModel.getColumn(2).preferredWidth = 120 // host
-        table.columnModel.getColumn(3).preferredWidth = 300 // url
-        table.columnModel.getColumn(4).preferredWidth = 120 // title
-        table.columnModel.getColumn(5).preferredWidth = 400 // params
-        table.columnModel.getColumn(6).preferredWidth = 50 // method
+        table.columnModel.getColumn(3).preferredWidth = 450 // params
+        table.columnModel.getColumn(4).preferredWidth = 250 // path
+        table.columnModel.getColumn(5).preferredWidth = 150 // title
+        table.columnModel.getColumn(6).preferredWidth = 145 // date
         table.columnModel.getColumn(7).preferredWidth = 50 // status
         table.columnModel.getColumn(8).preferredWidth = 50 // length
-        table.columnModel.getColumn(9).preferredWidth = 75 // mime
-        table.columnModel.getColumn(10).preferredWidth = 50 // protocol
+        table.columnModel.getColumn(9).preferredWidth = 100 // mime
+        table.columnModel.getColumn(10).preferredWidth = 100 // protocol
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION)
         table.rowSorter = TableRowSorter(model)
 
@@ -54,12 +54,12 @@ class ReflectionsModel : AbstractTableModel() {
     private val columns =
         listOf(
             "ID",
-            "Added",
-            "Host",
-            "URL",
-            "Title",
-            "Reflected Parameters",
             "Method",
+            "Host",
+            "Reflected Parameters",
+            "Path",
+            "Title",
+            "Added",
             "Status",
             "Length",
             "MIME",
@@ -99,12 +99,12 @@ class ReflectionsModel : AbstractTableModel() {
 
         return when (columnIndex) {
             0 -> rowIndex
-            1 -> reflection.dateTime
+            1 -> reflection.method
             2 -> reflection.host
-            3 -> reflection.url.toString()
-            4 -> reflection.title
-            5 -> reflection.parameters
-            6 -> reflection.method
+            3 -> reflection.parameters
+            4 -> reflection.path
+            5 -> reflection.title
+            6 -> reflection.dateTime
             7 -> reflection.statusCode.toString()
             8 -> reflection.length.toString()
             9 -> reflection.mimeType
