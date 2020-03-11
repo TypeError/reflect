@@ -38,7 +38,7 @@ class ReflectListener(private val reflectPanel: ReflectPanel) : HttpSenderListen
                     val now = LocalDateTime.now()
                     val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
                     val dateTime = now.format(dateFormatter) ?: ""
-                    val parameters = params.joinToString { "${it.name}=${it.value}" }
+                    val parameters = reflected.joinToString { "${it.name}=${it.value}" }
                     val reqRes = ReflectedResponse(
                         msg = msg,
                         dateTime = dateTime,
