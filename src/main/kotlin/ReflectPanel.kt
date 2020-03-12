@@ -4,6 +4,7 @@ import org.parosproxy.paros.extension.AbstractPanel
 import org.parosproxy.paros.view.View
 import java.awt.BorderLayout
 import javax.swing.JScrollPane
+import javax.swing.JSplitPane
 import javax.swing.JTable
 import javax.swing.ListSelectionModel
 import javax.swing.table.AbstractTableModel
@@ -13,6 +14,9 @@ import javax.swing.table.TableRowSorter
 class ReflectPanel : AbstractPanel() {
     val model = ReflectionsModel()
     val table = JTable(model)
+    val reflections = model.reflections
+    private val reflectionOptions = ReflectOptions(this)
+    private val panel = JSplitPane(JSplitPane.VERTICAL_SPLIT)
 
     init {
         ReflectionActions(this, model.reflections)
@@ -42,7 +46,9 @@ class ReflectPanel : AbstractPanel() {
         name = "Reflect"
         layout = BorderLayout()
         val reflectionsTable = JScrollPane(table)
-        add(reflectionsTable)
+        panel.topComponent = reflectionOptions.panel
+        panel.bottomComponent = reflectionsTable
+        add(panel)
     }
 
     fun addReflection(reflection: ReflectedResponse) {
@@ -129,7 +135,7 @@ class ReflectionsModel : AbstractTableModel() {
         refreshReflections()
     }
 
-    private fun refreshReflections(updatedReflection: MutableList<ReflectedResponse> = reflections) {
+     fun refreshReflections(updatedReflection: MutableList<ReflectedResponse> = reflections) {
         displayedReflections = updatedReflection
         fireTableDataChanged()
     }
