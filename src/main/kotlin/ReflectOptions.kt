@@ -10,6 +10,7 @@ class ReflectOptions(
     private val loadPanel = JPanel(FlowLayout(FlowLayout.RIGHT))
     private val searchBar = JTextField("", 20)
     private val searchPanel = JPanel(FlowLayout(FlowLayout.LEFT))
+    val scopeCheckBox = JCheckBox("Collect out of scope requests")
 
     init {
         val clearButton = JButton("Clear Reflections")
@@ -25,6 +26,7 @@ class ReflectOptions(
         searchPanel.add(searchButton)
         searchPanel.add(resetButton)
         loadPanel.add(clearButton)
+        searchPanel.add(scopeCheckBox)
         panel.leftComponent = searchPanel
         panel.rightComponent = loadPanel
         panel.dividerSize = 0

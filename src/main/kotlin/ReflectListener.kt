@@ -27,12 +27,12 @@ data class ReflectedResponse(
 class ReflectListener(private val reflectPanel: ReflectPanel) : HttpSenderListener {
 
     override fun onHttpResponseReceive(msg: HttpMessage?, initiator: Int, sender: HttpSender?) {
-        msg?.let {
-            if (msg.isInScope) {
+        msg?.let { req ->
+            if (req.isInScope || reflectPanel.scopeCheckbox.isSelected) {
                 val params = mutableSetOf<HtmlParameter>()
-                params.addAll(msg.urlParams)
-                params.addAll(msg.formParams)
-                val responseBody = msg.responseBody.toString()
+                params.addAll(req.urlParams)
+                params.addAll(req.formParams)
+                val responseBody = req.responseBody.toString()
                 val reflected = params.asSequence().filter { it.value.length >= 4 }
                     .filter { responseBody.contains(it.value, ignoreCase = true) }.toSet()
                 if (reflected.isNotEmpty()) {
@@ -41,17 +41,17 @@ class ReflectListener(private val reflectPanel: ReflectPanel) : HttpSenderListen
                     val dateTime = now.format(dateFormatter) ?: ""
                     val parameters = reflected.joinToString { "${it.name}=${it.value}" }
                     val reqRes = ReflectedResponse(
-                        msg = msg,
+                        msg = req,
                         dateTime = dateTime,
-                        host = msg.requestHeader?.uri?.host ?: "",
-                        url = msg.requestHeader?.uri,
-                        path = msg.requestHeader.uri.path,
-                        method = msg.requestHeader?.method ?: "",
-                        statusCode = msg.responseHeader.statusCode,
+                        host = req.requestHeader?.uri?.host ?: "",
+                        url = req.requestHeader?.uri,
+                        path = req.requestHeader.uri.path,
+                        method = req.requestHeader?.method ?: "",
+                        statusCode = req.responseHeader.statusCode,
                         title = getTitle(responseBody),
-                        length = msg.responseHeader.contentLength,
-                        mimeType = msg.responseHeader.getHeaderValues(HttpHeader.CONTENT_TYPE).toString(),
-                        protocol = msg.requestHeader.uri.scheme,
+                        length = req.responseHeader.contentLength,
+                        mimeType = req.responseHeader.getHeaderValues(HttpHeader.CONTENT_TYPE).toString(),
+                        protocol = req.requestHeader.uri.scheme,
                         parameters = parameters
                     )
                     reflectPanel.addReflection(reqRes)

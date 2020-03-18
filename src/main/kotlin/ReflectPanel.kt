@@ -16,6 +16,7 @@ class ReflectPanel : AbstractPanel() {
     val table = JTable(model)
     val reflections = model.reflections
     private val reflectionOptions = ReflectOptions(this)
+    val scopeCheckbox = reflectionOptions.scopeCheckBox
     private val panel = JSplitPane(JSplitPane.VERTICAL_SPLIT)
 
     init {
