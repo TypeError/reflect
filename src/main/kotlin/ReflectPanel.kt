@@ -3,10 +3,7 @@ package org.zaproxy.zap.extension.reflect
 import org.parosproxy.paros.extension.AbstractPanel
 import org.parosproxy.paros.view.View
 import java.awt.BorderLayout
-import javax.swing.JScrollPane
-import javax.swing.JSplitPane
-import javax.swing.JTable
-import javax.swing.ListSelectionModel
+import javax.swing.*
 import javax.swing.table.AbstractTableModel
 import javax.swing.table.TableRowSorter
 
@@ -38,10 +35,13 @@ class ReflectPanel : AbstractPanel() {
 
         table.selectionModel.addListSelectionListener {
             if (table.selectedRow != -1) {
-                val displayedReflections = model.displayedReflections
-                val selectedRow = table.convertRowIndexToModel(table.selectedRow)
-                val requestResponse = displayedReflections[selectedRow].msg
-                View.getSingleton().displayMessage(requestResponse)
+                SwingUtilities.invokeLater {
+                    val displayedReflections = model.displayedReflections
+                    val selectedRow = table.convertRowIndexToModel(table.selectedRow)
+                    val requestResponse = displayedReflections[selectedRow].msg
+                    View.getSingleton().displayMessage(requestResponse)
+                    displayedReflections[selectedRow].highlighter.highlight()
+                }
             }
         }
         name = "Reflect"
@@ -136,7 +136,7 @@ class ReflectionsModel : AbstractTableModel() {
         refreshReflections()
     }
 
-     fun refreshReflections(updatedReflection: MutableList<ReflectedResponse> = reflections) {
+    fun refreshReflections(updatedReflection: MutableList<ReflectedResponse> = reflections) {
         displayedReflections = updatedReflection
         fireTableDataChanged()
     }

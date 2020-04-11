@@ -21,7 +21,8 @@ data class ReflectedResponse(
     val length: Int,
     val mimeType: String,
     val protocol: String,
-    val parameters: String
+    val parameters: String,
+    val highlighter: ReflectHighlight
 )
 
 class ReflectListener(private val reflectPanel: ReflectPanel) : HttpSenderListener {
@@ -32,9 +33,16 @@ class ReflectListener(private val reflectPanel: ReflectPanel) : HttpSenderListen
                 val params = mutableSetOf<HtmlParameter>()
                 params.addAll(req.urlParams)
                 params.addAll(req.formParams)
+                val responseHeader = req.requestHeader.toString()
                 val responseBody = req.responseBody.toString()
                 val reflected = params.asSequence().filter { it.value.length >= 4 }
-                    .filter { responseBody.contains(it.value, ignoreCase = true) }.toSet()
+                    .filter {
+                        responseBody.contains(
+                            it.value,
+                            ignoreCase = true
+                        )
+                    }.toSet()
+                val reflectedTokens = reflected.map { it.value }.toSet().toList()
                 if (reflected.isNotEmpty()) {
                     val now = LocalDateTime.now()
                     val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -52,7 +60,8 @@ class ReflectListener(private val reflectPanel: ReflectPanel) : HttpSenderListen
                         length = req.responseHeader.contentLength,
                         mimeType = req.responseHeader.getHeaderValues(HttpHeader.CONTENT_TYPE).toString(),
                         protocol = req.requestHeader.uri.scheme,
-                        parameters = parameters
+                        parameters = parameters,
+                        highlighter = ReflectHighlight(req, reflectedTokens)
                     )
                     reflectPanel.addReflection(reqRes)
                 }
