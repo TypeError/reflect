@@ -26,7 +26,7 @@ class ReflectHighlight(private val reqRes: HttpMessage, private val tokens: List
                 reqRes,
                 SearchMatch.Location.RESPONSE_BODY,
                 matchResult.range.first,
-                matchResult.range.last
+                matchResult.range.last + 1
             )
         }
     }
