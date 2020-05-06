@@ -18,7 +18,7 @@ data class ReflectedResponse(
     val method: String,
     val statusCode: Int,
     val title: String,
-    val length: Int,
+    val length: String,
     val mimeType: String,
     val protocol: String,
     val parameters: String,
@@ -48,6 +48,11 @@ class ReflectListener(private val reflectPanel: ReflectPanel) : HttpSenderListen
                     val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
                     val dateTime = now.format(dateFormatter) ?: ""
                     val parameters = reflected.joinToString { "${it.name}=${it.value}" }
+                    val length = if (req.responseHeader.contentLength != -1) {
+                        req.responseHeader.contentLength.toString()
+                    } else {
+                        ""
+                    }
                     val reqRes = ReflectedResponse(
                         msg = req,
                         dateTime = dateTime,
@@ -57,7 +62,7 @@ class ReflectListener(private val reflectPanel: ReflectPanel) : HttpSenderListen
                         method = req.requestHeader?.method ?: "",
                         statusCode = req.responseHeader.statusCode,
                         title = getTitle(responseBody),
-                        length = req.responseHeader.contentLength,
+                        length = length,
                         mimeType = req.responseHeader.getHeaderValues(HttpHeader.CONTENT_TYPE).toString(),
                         protocol = req.requestHeader.uri.scheme,
                         parameters = parameters,

@@ -113,7 +113,7 @@ class ReflectionsModel : AbstractTableModel() {
             5 -> reflection.title
             6 -> reflection.dateTime
             7 -> reflection.statusCode.toString()
-            8 -> reflection.length.toString()
+            8 -> reflection.length
             9 -> reflection.mimeType
             10 -> reflection.protocol
             else -> ""
