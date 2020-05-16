@@ -54,7 +54,9 @@ class ReflectPanel : AbstractPanel() {
     }
 
     fun addReflection(reflection: ReflectedResponse) {
-        model.addReflection(reflection)
+        reflections.add(reflection)
+        if (!reflectionOptions.filtered())
+            model.refreshReflections()
     }
 }
 
@@ -121,14 +123,8 @@ class ReflectionsModel : AbstractTableModel() {
         }
     }
 
-    fun addReflection(reflection: ReflectedResponse) {
-        this.reflections.add(reflection)
-        displayedReflections = this.reflections
-        fireTableRowsInserted(displayedReflections.lastIndex, displayedReflections.lastIndex)
-    }
-
     fun removeReflection(reflection: MutableList<ReflectedResponse>) {
-        this.reflections.removeAll(reflection)
+        reflections.removeAll(reflection)
         refreshReflections()
     }
 
