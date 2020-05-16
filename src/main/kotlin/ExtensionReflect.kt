@@ -20,6 +20,10 @@ class ExtensionReflect : ExtensionAdaptor(NAME) {
         }
     }
 
+    override fun unload() {
+        HttpSender.removeListener(ReflectListener(reflectPanel))
+    }
+
     override fun canUnload(): Boolean = true
 
     override fun getAuthor(): String = "Caleb Kinney"
