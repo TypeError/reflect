@@ -17,8 +17,8 @@ class ReflectPanel : AbstractPanel() {
     private val panel = JSplitPane(JSplitPane.VERTICAL_SPLIT)
 
     init {
-        ReflectionActions(this, model.reflections)
-        table.autoResizeMode = JTable.AUTO_RESIZE_OFF
+        ReflectionActions(this)
+        table.autoResizeMode = JTable.AUTO_RESIZE_ALL_COLUMNS
         table.columnModel.getColumn(0).preferredWidth = 30 // ID
         table.columnModel.getColumn(1).preferredWidth = 50 // method
         table.columnModel.getColumn(2).preferredWidth = 120 // host
@@ -32,6 +32,7 @@ class ReflectPanel : AbstractPanel() {
         table.columnModel.getColumn(10).preferredWidth = 100 // protocol
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION)
         table.rowSorter = TableRowSorter(model)
+        table.autoscrolls = true
 
         table.selectionModel.addListSelectionListener {
             if (table.selectedRow != -1) {
