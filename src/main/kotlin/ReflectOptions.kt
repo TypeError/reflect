@@ -49,24 +49,16 @@ class ReflectOptions(
                     }.toMutableList()
             }
             reflectPanel.model.refreshReflections(filteredReflection)
-            rowSelection()
         }
     }
 
     private fun resetSearch() {
         searchBar.text = ""
         reflectPanel.model.refreshReflections()
-        rowSelection()
     }
 
     private fun clearReflection() {
         reflectPanel.model.clearReflections()
     }
 
-    private fun rowSelection() {
-        val rowCount = reflectPanel.table.rowCount
-        if (rowCount != -1) {
-            reflectPanel.table.setRowSelectionInterval(rowCount - 1, rowCount - 1)
-        }
-    }
 }
