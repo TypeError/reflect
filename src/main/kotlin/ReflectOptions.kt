@@ -32,6 +32,15 @@ class ReflectOptions(
         panel.dividerSize = 0
     }
 
+    fun filtered(): Boolean {
+        return if (searchBar.text.isNotEmpty()) {
+            searchReflection()
+            true
+        } else {
+            false
+        }
+    }
+
     private fun searchReflection() {
         SwingUtilities.invokeLater {
             val searchText = searchBar.text.toLowerCase()
