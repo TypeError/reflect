@@ -9,8 +9,7 @@ import javax.swing.JMenuItem
 import javax.swing.JPopupMenu
 
 class ReflectionActions(
-    private val panel: ReflectPanel,
-    private val reflections: MutableList<ReflectedResponse>
+    private val panel: ReflectPanel
 ) : ActionListener {
     private val table = panel.table
     private val actionsMenu = JPopupMenu()
@@ -51,7 +50,7 @@ class ReflectionActions(
     private fun getSelectedReflections(): MutableList<ReflectedResponse> {
         val selectedReflections: MutableList<ReflectedResponse> = ArrayList()
         for (index in table.selectedRows) {
-            selectedReflections.add(reflections[index])
+            selectedReflections.add(panel.model.reflections[index])
         }
         return selectedReflections
     }
