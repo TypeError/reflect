@@ -6,6 +6,7 @@ import org.parosproxy.paros.network.HttpHeader
 import org.parosproxy.paros.network.HttpMessage
 import org.parosproxy.paros.network.HttpSender
 import org.zaproxy.zap.network.HttpSenderListener
+import java.net.URLDecoder
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -33,16 +34,32 @@ class ReflectListener(private val reflectPanel: ReflectPanel) : HttpSenderListen
                 val params = mutableSetOf<HtmlParameter>()
                 params.addAll(req.urlParams)
                 params.addAll(req.formParams)
-                val responseHeader = req.requestHeader.toString()
+                val filteredParams = params.asSequence().filter { it.value.length >= 4 }
+                val responseHeader = req.responseHeader.toString()
                 val responseBody = req.responseBody.toString()
-                val reflected = params.asSequence().filter { it.value.length >= 4 }
+                val reflectedHeader = filteredParams
+                    .filter {
+                        responseHeader.contains(
+                            it.value,
+                            ignoreCase = true
+                        ) || responseHeader.contains(
+                            URLDecoder.decode(it.value, "UTF-8"),
+                            ignoreCase = true
+                        )
+                    }.toSet()
+                val reflectedBody = filteredParams
                     .filter {
                         responseBody.contains(
                             it.value,
                             ignoreCase = true
+                        ) || responseBody.contains(
+                            URLDecoder.decode(it.value, "UTF-8"),
+                            ignoreCase = true
                         )
                     }.toSet()
-                val reflectedTokens = reflected.map { it.value }.toSet().toList()
+                val reflectedHeaderTokens = reflectedHeader.map { it.value }.toSet().toList()
+                val reflectedBodyTokens = reflectedBody.map { it.value }.toSet().toList()
+                val reflected = (reflectedHeader + reflectedBody).toSet().toList()
                 if (reflected.isNotEmpty()) {
                     val now = LocalDateTime.now()
                     val dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
@@ -66,7 +83,7 @@ class ReflectListener(private val reflectPanel: ReflectPanel) : HttpSenderListen
                         mimeType = req.responseHeader.getHeaderValues(HttpHeader.CONTENT_TYPE).toString(),
                         protocol = req.requestHeader.uri.scheme,
                         parameters = parameters,
-                        highlighter = ReflectHighlight(req, reflectedTokens)
+                        highlighter = ReflectHighlight(req, reflectedHeaderTokens, reflectedBodyTokens)
                     )
                     reflectPanel.addReflection(reqRes)
                 }
