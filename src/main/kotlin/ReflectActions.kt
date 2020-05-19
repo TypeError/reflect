@@ -50,7 +50,8 @@ class ReflectionActions(
     private fun getSelectedReflections(): MutableList<ReflectedResponse> {
         val selectedReflections: MutableList<ReflectedResponse> = ArrayList()
         for (index in table.selectedRows) {
-            selectedReflections.add(panel.model.reflections[index])
+            val row = panel.rowSorter.convertRowIndexToModel(index)
+            selectedReflections.add(panel.model.displayedReflections[row])
         }
         return selectedReflections
     }

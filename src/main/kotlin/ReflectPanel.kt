@@ -15,6 +15,7 @@ class ReflectPanel : AbstractPanel() {
     private val reflectionOptions = ReflectOptions(this)
     val scopeCheckbox = reflectionOptions.scopeCheckBox
     private val panel = JSplitPane(JSplitPane.VERTICAL_SPLIT)
+    val rowSorter = TableRowSorter(model)
 
     init {
         ReflectionActions(this)
@@ -31,7 +32,7 @@ class ReflectPanel : AbstractPanel() {
         table.columnModel.getColumn(9).preferredWidth = 100 // mime
         table.columnModel.getColumn(10).preferredWidth = 100 // protocol
         table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION)
-        table.rowSorter = TableRowSorter(model)
+        table.rowSorter = rowSorter
         table.autoscrolls = true
 
         table.selectionModel.addListSelectionListener {
