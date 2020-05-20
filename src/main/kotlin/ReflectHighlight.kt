@@ -11,7 +11,10 @@ class ReflectHighlight(
 ) {
 
     private val searchMatch: Pair<SearchMatch?, SearchMatch?> by lazy {
-        Pair(searchMatcher(headerTokens), searchMatcher(bodyTokens))
+        Pair(
+            searchMatcher(headerTokens, SearchMatch.Location.RESPONSE_HEAD),
+            searchMatcher(bodyTokens, SearchMatch.Location.RESPONSE_BODY)
+        )
     }
 
     fun highlight() {
@@ -22,15 +25,19 @@ class ReflectHighlight(
         }
     }
 
-    private fun searchMatcher(tokens: List<String>): SearchMatch? {
+    private fun searchMatcher(tokens: List<String>, searchLocation: SearchMatch.Location): SearchMatch? {
         val token = tokens.minBy { it.length } ?: return null
         val pattern = token.toRegex()
-        val match = pattern.find(reqRes.responseBody.toString())
+        val match = if (searchLocation == SearchMatch.Location.RESPONSE_BODY) {
+            pattern.find(reqRes.responseBody.toString())
+        } else {
+            pattern.find(reqRes.responseHeader.toString())
+        }
 
         return match?.let { matchResult ->
             SearchMatch(
                 reqRes,
-                SearchMatch.Location.RESPONSE_BODY,
+                searchLocation,
                 matchResult.range.first,
                 matchResult.range.last + 1
             )
