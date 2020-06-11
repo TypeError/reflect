@@ -3,6 +3,7 @@ package org.zaproxy.zap.extension.reflect
 import org.parosproxy.paros.network.HttpMessage
 import org.parosproxy.paros.view.View
 import org.zaproxy.zap.extension.search.SearchMatch
+import java.net.URLDecoder
 
 class ReflectHighlight(
     private val reqRes: HttpMessage,
@@ -28,11 +29,21 @@ class ReflectHighlight(
     private fun searchMatcher(tokens: List<String>, searchLocation: SearchMatch.Location): SearchMatch? {
         val token = tokens.minBy { it.length } ?: return null
         val pattern = token.toRegex()
-        val match = if (searchLocation == SearchMatch.Location.RESPONSE_BODY) {
+        var match = if (searchLocation == SearchMatch.Location.RESPONSE_BODY) {
             pattern.find(reqRes.responseBody.toString())
         } else {
             pattern.find(reqRes.responseHeader.toString())
         }
+
+        if (match == null) {
+            val decodedPattern = URLDecoder.decode(token, "UTF-8").toRegex()
+            match = if (searchLocation == SearchMatch.Location.RESPONSE_BODY) {
+                decodedPattern.find(reqRes.responseBody.toString())
+            } else {
+                decodedPattern.find(reqRes.responseHeader.toString())
+            }
+        }
+
 
         return match?.let { matchResult ->
             SearchMatch(
