@@ -20,7 +20,7 @@ class ReflectPanel : AbstractPanel() {
     init {
         ReflectionActions(this)
         table.autoResizeMode = JTable.AUTO_RESIZE_ALL_COLUMNS
-        table.columnModel.getColumn(0).preferredWidth = 40 // ID
+        table.columnModel.getColumn(0).preferredWidth = 50 // ID
         table.columnModel.getColumn(1).preferredWidth = 50 // method
         table.columnModel.getColumn(2).preferredWidth = 120 // host
         table.columnModel.getColumn(3).preferredWidth = 450 // params
