@@ -36,7 +36,9 @@ class ExtensionReflect : ExtensionAdaptor(NAME) {
         super.postInstall()
 
         if (view != null) {
-            reflectPanel.setTabFocus()
+            EventQueue.invokeLater {
+                reflectPanel.setTabFocus()
+            }
         }
     }
 }
