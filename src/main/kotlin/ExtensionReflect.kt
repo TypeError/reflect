@@ -7,8 +7,8 @@ import java.awt.EventQueue
 
 class ExtensionReflect : ExtensionAdaptor(NAME) {
 
-    private val reflectPanel = ReflectPanel()
-    private val reflectListener = ReflectListener(reflectPanel)
+    private var reflectPanel: ReflectPanel? = null
+    private var reflectListener: ReflectListener? = null
 
     companion object {
         const val NAME = "Reflect"
@@ -17,8 +17,12 @@ class ExtensionReflect : ExtensionAdaptor(NAME) {
     override fun hook(extensionHook: ExtensionHook?) {
         super.hook(extensionHook)
         if (view != null) {
-            HttpSender.addListener(reflectListener)
-            extensionHook?.hookView?.addStatusPanel(reflectPanel)
+            reflectPanel = ReflectPanel()
+            reflectPanel?.let { panel ->
+                reflectListener = ReflectListener(panel)
+                HttpSender.addListener(reflectListener)
+                extensionHook?.hookView?.addStatusPanel(panel)
+            }
         }
     }
 
@@ -37,7 +41,7 @@ class ExtensionReflect : ExtensionAdaptor(NAME) {
 
         if (view != null) {
             EventQueue.invokeLater {
-                reflectPanel.setTabFocus()
+                reflectPanel?.setTabFocus()
             }
         }
     }
