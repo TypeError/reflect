@@ -43,7 +43,9 @@ class ReflectListener(private val reflectPanel: ReflectPanel) : HttpSenderListen
                             it.value,
                             ignoreCase = true
                         ) || responseHeader.contains(
-                            URLDecoder.decode(it.value, "UTF-8"),
+                            URLDecoder.decode(
+                                it.value.replace("%", "%25"), "UTF-8"
+                            ),
                             ignoreCase = true
                         )
                     }.toSet()
