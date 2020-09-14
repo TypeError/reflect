@@ -21,12 +21,14 @@ class ReflectOptions(
         searchBar.addActionListener { searchReflection() }
         searchButton.addActionListener { searchReflection() }
         resetButton.addActionListener { resetSearch() }
-        searchPanel.add(searchLabel)
-        searchPanel.add(searchBar)
-        searchPanel.add(searchButton)
-        searchPanel.add(resetButton)
         loadPanel.add(clearButton)
-        searchPanel.add(scopeCheckBox)
+        searchPanel.apply {
+            add(searchLabel)
+            add(searchBar)
+            add(searchButton)
+            add(resetButton)
+            add(clearButton)
+        }
         panel.leftComponent = searchPanel
         panel.rightComponent = loadPanel
         panel.dividerSize = 0

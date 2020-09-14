@@ -21,10 +21,12 @@ class ReflectionActions(
         copyURLs.addActionListener(this)
         deleteMenu.addActionListener(this)
         clearMenu.addActionListener(this)
-        actionsMenu.add(copyURLs)
-        actionsMenu.addSeparator()
-        actionsMenu.add(deleteMenu)
-        actionsMenu.add(clearMenu)
+        actionsMenu.apply {
+            add(copyURLs)
+            addSeparator()
+            add(deleteMenu)
+            add(clearMenu)
+        }
         panel.table.componentPopupMenu = actionsMenu
     }
 

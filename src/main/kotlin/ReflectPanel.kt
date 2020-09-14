@@ -84,24 +84,13 @@ class ReflectionsModel : AbstractTableModel() {
 
     override fun getColumnCount(): Int = columns.size
 
-    override fun getColumnName(column: Int): String {
-        return columns[column]
-    }
+    override fun getColumnName(column: Int) = columns[column]
 
     override fun getColumnClass(columnIndex: Int): Class<*> {
         return when (columnIndex) {
             0 -> java.lang.Integer::class.java
-            1 -> String::class.java
-            2 -> String::class.java
-            3 -> String::class.java
-            4 -> String::class.java
-            5 -> String::class.java
-            6 -> String::class.java
-            7 -> String::class.java
-            8 -> String::class.java
-            9 -> String::class.java
-            10 -> String::class.java
-            else -> throw RuntimeException()
+            in 1..10 -> String::class.java
+            else -> throw IndexOutOfBoundsException("$columnIndex is out of bounds.")
         }
     }
 
