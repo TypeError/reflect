@@ -5,7 +5,7 @@ plugins {
     id("org.zaproxy.add-on") version "0.3.0"
 }
 
-version = "0.0.8"
+version = "0.0.9"
 description = "Finds reflected parameters"
 
 zapAddOn {
