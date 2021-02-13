@@ -27,7 +27,7 @@ class ReflectHighlight(
     }
 
     private fun searchMatcher(tokens: List<String>, searchLocation: SearchMatch.Location): SearchMatch? {
-        val token = tokens.minBy { it.length } ?: return null
+        val token = tokens.minByOrNull { it.length } ?: return null
         val pattern = token.toRegex()
         var match = if (searchLocation == SearchMatch.Location.RESPONSE_BODY) {
             pattern.find(reqRes.responseBody.toString())
@@ -43,7 +43,6 @@ class ReflectHighlight(
                 decodedPattern.find(reqRes.responseHeader.toString())
             }
         }
-
 
         return match?.let { matchResult ->
             SearchMatch(

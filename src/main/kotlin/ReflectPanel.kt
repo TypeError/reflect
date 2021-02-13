@@ -3,10 +3,13 @@ package org.zaproxy.zap.extension.reflect
 import org.parosproxy.paros.extension.AbstractPanel
 import org.parosproxy.paros.view.View
 import java.awt.BorderLayout
-import javax.swing.*
+import javax.swing.JScrollPane
+import javax.swing.JSplitPane
+import javax.swing.JTable
+import javax.swing.ListSelectionModel
+import javax.swing.SwingUtilities
 import javax.swing.table.AbstractTableModel
 import javax.swing.table.TableRowSorter
-
 
 class ReflectPanel : AbstractPanel() {
     val model = ReflectionsModel()

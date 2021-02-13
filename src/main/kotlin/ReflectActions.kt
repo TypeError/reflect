@@ -30,7 +30,6 @@ class ReflectionActions(
         panel.table.componentPopupMenu = actionsMenu
     }
 
-
     override fun actionPerformed(e: ActionEvent?) {
         if (table.selectedRow == -1) return
         val selectedReflections = getSelectedReflections()

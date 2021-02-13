@@ -46,4 +46,3 @@ class ExtensionReflect : ExtensionAdaptor(NAME) {
         }
     }
 }
-

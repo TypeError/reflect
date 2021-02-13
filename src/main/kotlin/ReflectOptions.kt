@@ -1,7 +1,13 @@
 package org.zaproxy.zap.extension.reflect
 
 import java.awt.FlowLayout
-import javax.swing.*
+import javax.swing.JButton
+import javax.swing.JCheckBox
+import javax.swing.JLabel
+import javax.swing.JPanel
+import javax.swing.JSplitPane
+import javax.swing.JTextField
+import javax.swing.SwingUtilities
 
 class ReflectOptions(
     private val reflectPanel: ReflectPanel
@@ -51,12 +57,12 @@ class ReflectOptions(
                 filteredReflection = filteredReflection
                     .filter {
                         it.url.toString().toLowerCase().contains(searchText) ||
-                                it.msg.requestBody.toString().toLowerCase().contains(
-                                    searchText
-                                ) ||
-                                it.msg.responseBody.toString().toLowerCase().contains(
-                                    searchText
-                                )
+                            it.msg.requestBody.toString().toLowerCase().contains(
+                                searchText
+                            ) ||
+                            it.msg.responseBody.toString().toLowerCase().contains(
+                                searchText
+                            )
                     }.toMutableList()
             }
             reflectPanel.model.refreshReflections(filteredReflection)
@@ -71,5 +77,4 @@ class ReflectOptions(
     private fun clearReflection() {
         reflectPanel.model.clearReflections()
     }
-
 }
