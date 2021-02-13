@@ -1,11 +1,11 @@
 import org.zaproxy.gradle.addon.AddOnStatus
 
 plugins {
-    kotlin("jvm") version "1.3.61"
-    id("org.zaproxy.add-on") version "0.3.0"
+    kotlin("jvm") version "1.4.30"
+    id("org.zaproxy.add-on") version "0.4.0"
 }
 
-version = "0.0.9"
+version = "0.0.10"
 description = "Finds reflected parameters"
 
 zapAddOn {
