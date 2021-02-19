@@ -99,7 +99,7 @@ class ReflectListener(private val reflectPanel: ReflectPanel) : HttpSenderListen
                 URLDecoder.decode(paramValue, "UTF-8"), ignoreCase = true
             )
         } catch (e: IllegalArgumentException) {
-            logger.warn(
+            logger.debug(
                 "An error occurred URL decoding the parameter value: $paramValue on ${req.requestHeader?.uri} [Reflect add-on]",
                 e
             )
